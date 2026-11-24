@@ -5,6 +5,7 @@ Rodwell et al., 2010), the WMO headline score for precipitation, for use as a tr
 
 This is the repository to a paper currently under review.
 
+![Pareto Curve of SoftSEEPS](.png)
 
 SEEPS sorts forecast and observation into three categories (dry, light, heavy) using
 climatological thresholds and penalises category errors with a matrix that depends on the
