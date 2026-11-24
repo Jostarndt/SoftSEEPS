@@ -1,7 +1,7 @@
 # SoftSEEPS
 
 A differentiable relaxation of **SEEPS** (Stable Equitable Error in Probability Space;
-Rodwell et al., 2010), the WMO headline score for precipitation, for use as a training loss.
+Rodwell et al., 2010), to use as a training loss.
 
 This is the repository to a paper currently under review.
 
