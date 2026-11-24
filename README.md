@@ -3,6 +3,9 @@
 A differentiable relaxation of **SEEPS** (Stable Equitable Error in Probability Space;
 Rodwell et al., 2010), the WMO headline score for precipitation, for use as a training loss.
 
+This is the repository to a paper currently under review.
+
+
 SEEPS sorts forecast and observation into three categories (dry, light, heavy) using
 climatological thresholds and penalises category errors with a matrix that depends on the
 climatological probability of a dry day, `p1`. SoftSEEPS replaces the hard forecast category
