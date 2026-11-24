@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "softseeps"
+version = "0.1.0"
+description = "SoftSEEPS: a differentiable relaxation of the SEEPS precipitation score for training weather models"
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+dependencies = ["torch>=2.0"]
+
+[project.optional-dependencies]
+example = ["xarray", "zarr", "gcsfs", "pandas", "numpy", "matplotlib", "jupyter"]
+test = ["pytest"]
+
+[tool.setuptools]
+packages = ["softseeps"]
