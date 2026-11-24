@@ -12,7 +12,7 @@ license = { text = "MIT" }
 dependencies = ["torch>=2.0"]
 
 [project.optional-dependencies]
-example = ["xarray", "zarr", "gcsfs", "pandas", "numpy", "matplotlib", "jupyter"]
+example = ["xarray", "zarr", "gcsfs", "pandas", "numpy", "jupyter"]
 test = ["pytest"]
 
 [tool.setuptools]

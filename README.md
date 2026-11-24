@@ -60,7 +60,7 @@ precipitation ≤ `dry_threshold`, and `t2` = 2/3 quantile of the wet days.
 ## Example
 
 `examples/weatherbench2_example.ipynb` loads the WeatherBench 2 climatology, an IFS HRES
-forecast and ERA5, computes SoftSEEPS for several τ and shows its gradient
+forecast and ERA5, and computes SoftSEEPS and its gradient globally and for a European domain
 (`pip install ".[example]"` from the repository root). Forecasts in the same bucket include
 `gs://weatherbench2/datasets/hres/2016-2022-0012-1440x721.zarr` (IFS HRES) and
 `gs://weatherbench2/datasets/era5/1959-2023_01_10-wb13-6h-1440x721_with_derived_variables.zarr`
