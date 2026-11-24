@@ -6,11 +6,11 @@ def soft_seeps(forecast, observation, p1, t2, dry_threshold=0.25, tau=1.0, weigh
     """Mean SoftSEEPS of ``forecast`` against ``observation``.
 
     forecast, observation: precipitation, any shape ``[..., H, W]``.
-    p1: climatological probability of a dry day, broadcastable to ``forecast``.
-    t2: climatological light/heavy threshold, broadcastable to ``forecast``.
+    p1: climatological probability of a dry day, shape ``[H, W]`` or ``[..., H, W]``.
+    t2: climatological light/heavy threshold, shape ``[H, W]`` or ``[..., H, W]``.
     dry_threshold: dry/light threshold (e.g. 0.25 mm for 24 h accumulations).
     tau: smoothing parameter, width of the sigmoids; tau -> 0 gives discrete SEEPS.
-    weights: optional point weights, e.g. cos(latitude), broadcastable to ``forecast``.
+    weights: optional point weights, shape ``[H, W]``, or ``[H, 1]`` for cos(latitude).
 
     Forecast, observation, thresholds and tau must use the same unit. Points with
     ``p1`` outside [0.1, 0.85] or non-finite inputs are ignored.

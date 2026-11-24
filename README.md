@@ -25,11 +25,11 @@ loss = soft_seeps(forecast, observation, p1, t2, dry_threshold=0.25, tau=1.0, we
 | Argument | Meaning |
 |---|---|
 | `forecast`, `observation` | precipitation tensors, any shape `[..., H, W]` |
-| `p1` | climatological probability of a dry day, broadcastable to `forecast` |
-| `t2` | climatological light/heavy threshold (splits the wet days 2:1), broadcastable to `forecast` |
+| `p1` | climatological probability of a dry day, shape `[H, W]` or `[..., H, W]` |
+| `t2` | climatological light/heavy threshold (splits the wet days 2:1), shape `[H, W]` or `[..., H, W]` |
 | `dry_threshold` | dry/light threshold, e.g. 0.25 mm for 24 h and 0.1 mm for 6 h accumulations |
 | `tau` | smoothing parameter (width of the sigmoids), in the unit of the precipitation |
-| `weights` | optional point weights, e.g. cos(latitude) |
+| `weights` | optional point weights, shape `[H, W]`, or `[H, 1]` for cos(latitude) |
 
 Forecast, observation, `t2`, `dry_threshold` and `tau` must use the same unit. Points with `p1`
 outside [0.1, 0.85] (where SEEPS is not defined) or with non-finite inputs are ignored. The
