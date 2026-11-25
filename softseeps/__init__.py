@@ -2,7 +2,8 @@
 import torch
 
 
-def soft_seeps(forecast, observation, p1, t2, dry_threshold=0.25, tau=1.0, weights=None):
+def soft_seeps(forecast, observation, p1, t2, dry_threshold=0.25, tau=1.0, weights=None,
+               soft_observation=False):
     """Mean SoftSEEPS of ``forecast`` against ``observation``.
 
     forecast, observation: precipitation, any shape ``[..., H, W]``.
@@ -11,6 +12,8 @@ def soft_seeps(forecast, observation, p1, t2, dry_threshold=0.25, tau=1.0, weigh
     dry_threshold: dry/light threshold (e.g. 0.25 mm for 24 h accumulations).
     tau: smoothing parameter, width of the sigmoids; tau -> 0 gives discrete SEEPS.
     weights: optional point weights, shape ``[H, W]``, or ``[H, 1]`` for cos(latitude).
+    soft_observation: relax the observed category with the same sigmoids (no gradient
+        through the observation); by default the observation keeps its hard category.
 
     Forecast, observation, thresholds and tau must use the same unit. Points with
     ``p1`` outside [0.1, 0.85] or non-finite inputs are ignored.
@@ -32,12 +35,17 @@ def soft_seeps(forecast, observation, p1, t2, dry_threshold=0.25, tau=1.0, weigh
                            torch.stack([a, z, c], -1),
                            torch.stack([a + d, d, z], -1)], -2)
 
-    # Forecast: soft categories (dry, light, heavy). Observation: hard categories.
-    f_dry = torch.sigmoid((dry_threshold - forecast) / tau)
-    f_heavy = torch.sigmoid((forecast - t2) / tau)
-    f = torch.stack([f_dry, (1 - f_dry - f_heavy).clamp(min=0), f_heavy], -1)
-    o_cat = (observation > dry_threshold).long() + (observation > t2).long()
-    o = torch.nn.functional.one_hot(o_cat, 3).to(f.dtype)
+    # Soft categories (dry, light, heavy) of the forecast; hard or soft ones of the observation.
+    def soft_category(x):
+        dry, heavy = torch.sigmoid((dry_threshold - x) / tau), torch.sigmoid((x - t2) / tau)
+        return torch.stack([dry, (1 - dry - heavy).clamp(min=0), heavy], -1)
+
+    f = soft_category(forecast)
+    if soft_observation:
+        o = soft_category(observation).detach()
+    else:
+        o_cat = (observation > dry_threshold).long() + (observation > t2).long()
+        o = torch.nn.functional.one_hot(o_cat, 3).to(f.dtype)
 
     score = torch.einsum("...i,...ij,...j->...", f, S, o)
     w = valid.to(score.dtype) if weights is None else valid * torch.as_tensor(weights, device=score.device)

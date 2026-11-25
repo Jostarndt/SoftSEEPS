@@ -34,10 +34,11 @@ loss = soft_seeps(forecast, observation, p1, t2, dry_threshold=0.25, tau=1.0, we
 | `dry_threshold` | dry/light threshold, e.g. 0.25 mm for 24 h and 0.1 mm for 6 h accumulations |
 | `tau` | smoothing parameter (width of the sigmoids), in the unit of the precipitation |
 | `weights` | optional point weights, shape `[H, W]`, or `[H, 1]` for cos(latitude) |
+| `soft_observation` | also relax the observed category with the same sigmoids (no gradient through it); default `False` |
 
 Forecast, observation, `t2`, `dry_threshold` and `tau` must use the same unit. Points with `p1`
-outside [0.1, 0.85] (where SEEPS is not defined) or with non-finite inputs are ignored. The
-observation keeps its hard category. Combined with an MSLE loss:
+outside [0.1, 0.85] (where SEEPS is not defined) or with non-finite inputs are ignored. By
+default the observation keeps its hard category. Combined with an MSLE loss:
 
 ```python
 loss = msle(pred, obs) + lam * soft_seeps(pred, obs, p1, t2, dry_threshold, tau)
@@ -69,6 +70,11 @@ forecast and ERA5, and computes SoftSEEPS and its gradient globally and for a Eu
 `gs://weatherbench2/datasets/hres/2016-2022-0012-1440x721.zarr` (IFS HRES) and
 `gs://weatherbench2/datasets/era5/1959-2023_01_10-wb13-6h-1440x721_with_derived_variables.zarr`
 (ERA5 truth).
+
+## Paper experiments
+
+`paper/` holds the training code of both settings of the paper (Aurora 0.25° and the 0.1°
+IMERG decoder), see `paper/README.md`.
 
 ## Citation
 
